@@ -19,8 +19,8 @@
 
 // 默认计算100万位圆周率
 #define DEFAULT_DIGITS 1000000
-// 最大支持1000万位（可根据内存扩展）
-#define MAX_DIGITS 10000000
+// 最大支持1亿位（可根据内存扩展）
+#define MAX_DIGITS 100000000
 
 // 全局变量：存储程序名称，用于错误信息输出
 char *program_name = NULL;
