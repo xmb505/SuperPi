@@ -1,4 +1,4 @@
-# SuperPi
+# SuperPi:Rebron For Linux
 
 一个简洁高效的Linux平台圆周率计算工具，专为CPU稳定性测试设计。
 
