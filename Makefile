@@ -3,7 +3,7 @@
 
 CC = gcc
 CFLAGS = -Wall -Wextra -O3 -std=c99 -march=native
-LDFLAGS = -lm -lgmp -lfftw3
+LDFLAGS = -lm -lgmp -lfftw3 -lm
 PREFIX = /usr/local
 BINDIR = $(PREFIX)/bin
 DATADIR = $(PREFIX)/share

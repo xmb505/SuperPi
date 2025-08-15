@@ -15,6 +15,7 @@
 #include <stdint.h>     // 精确宽度整数类型
 #include <unistd.h>     // Unix标准函数
 #include <signal.h>     // 信号处理
+#include <math.h>       // 数学函数
 #include <gmp.h>        // GNU高精度数学库，用于大数计算
 #include <fftw3.h>      // FFTW库，用于优化计算
 
@@ -259,7 +260,7 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
     mpf_t a, b, t, p;           // Gauss-Legendre算法变量
     mpf_t a_next, b_next, t_next; // 下一次迭代的变量
     mpf_t pi;                   // 存储最终的π值
-    mpf_t temp1, temp2;         // 临时变量
+    mpf_t temp1, temp2, diff;   // 临时变量
     
     /* 初始化所有变量 */
     mpf_init(a);
@@ -272,6 +273,7 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
     mpf_init(pi);
     mpf_init(temp1);
     mpf_init(temp2);
+    mpf_init(diff);
     
     /* 设置Gauss-Legendre算法的初始值 */
     mpf_set_ui(a, 1);           // a0 = 1
@@ -284,11 +286,12 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
     /* 获取开始时间用于进度显示 */
     clock_t calc_start = clock();
     
+    /* 计算需要的迭代次数（Gauss-Legendre算法二次收敛） */
+    /* 大约需要 log2(digits) 次迭代 */
+    unsigned long required_iterations = (unsigned long)(log2(digits) + 2);
+    
     /* Gauss-Legendre算法迭代 */
-    unsigned long iterations = 0;
-    while (1) {
-        iterations++;
-        
+    for (unsigned long i = 0; i < required_iterations; i++) {
         /* 计算下一次迭代的值 */
         // a_next = (a + b) / 2
         mpf_add(temp1, a, b);
@@ -307,30 +310,16 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
         // p_next = 2 * p
         mpf_mul_ui(p, p, 2);
         
-        /* 检查收敛条件 */
-        mpf_sub(temp1, a_next, b_next);
-        mpf_abs(temp1, temp1);
-        
-        // 如果差值足够小，则停止迭代
-        if (mpf_cmp_d(temp1, 1e-50) < 0) {
-            break;
-        }
-        
-        /* 每10次迭代检查一次时间，显示2的幂次进度 */
-        if (iterations % 10 == 0) {
+        /* 每1次迭代检查一次时间，显示2的幂次进度 */
+        if (i % 3 == 0) {  // 每3次迭代显示一次进度
             clock_t now = clock();
             double elapsed = ((double)(now - calc_start)) / CLOCKS_PER_SEC;
-            
-            /* 估算当前精度位数（经验公式） */
-            uint64_t estimated_digits = (uint64_t)(iterations * 2);
             
             /* 显示2的幂次进度，避免重复显示 */
             static uint64_t last_shown = 0;
             uint64_t power_of_two = 128;
-            while (power_of_two <= digits && power_of_two <= estimated_digits) {
-                if (estimated_digits >= power_of_two && 
-                    estimated_digits < power_of_two * 2 && 
-                    power_of_two != last_shown) {
+            while (power_of_two <= digits && i >= (unsigned long)(log2(power_of_two/128)*3)) {
+                if (power_of_two > last_shown) {
                     printf(_("%6llu位: %8.3f秒\n"), 
                            (unsigned long long)power_of_two, elapsed);
                     fflush(stdout);
@@ -397,6 +386,7 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
     mpf_clear(pi);
     mpf_clear(temp1);
     mpf_clear(temp2);
+    mpf_clear(diff);
     
     /* 返回实际计算的位数 */
     return digits;
