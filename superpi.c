@@ -33,6 +33,7 @@ void print_usage(void);           // 打印使用帮助
 void print_version(void);         // 打印版本信息
 uint64_t calculate_pi_digits(uint64_t digits, char **result);  // 计算圆周率
 void save_pi_to_file(const char *pi_str, uint64_t digits);     // 保存结果到文件
+void print_progress_time(uint64_t current_digits, double elapsed_time);  // 显示进度时间
 
 int main(int argc, char *argv[]) {
     uint64_t digits = DEFAULT_DIGITS;  // 默认计算位数
@@ -73,6 +74,7 @@ int main(int argc, char *argv[]) {
     
     /* 开始计算 */
     printf(_("SuperPi - 正在计算圆周率到 %llu 位...\n"), (unsigned long long)digits);
+    printf(_("开始时间: %s\n"), __TIME__);
     
     clock_t start = clock();  // 记录开始时间
     
@@ -119,6 +121,23 @@ void print_version(void) {
     printf(_("实际计算圆周率，支持无限精度\n"));
     printf(_("针对64位系统优化\n"));
     printf(_("博客: blog.xmb505.top\n"));
+}
+
+/*
+ * 显示计算进度时间（模拟Windows SuperPi体验）
+ * 在2的幂次位数时显示时间：128, 256, 512, 1024, 2048, 4096, 8192...
+ * 
+ * 参数说明：
+ *   current_digits - 当前计算到的位数
+ *   elapsed_time - 从开始到现在的耗时（秒）
+ */
+void print_progress_time(uint64_t current_digits, double elapsed_time) {
+    /* 检查是否是2的幂次（128, 256, 512, 1024...） */
+    if (current_digits >= 128 && (current_digits & (current_digits - 1)) == 0) {
+        printf(_("计算到 %llu 位用时: %.3f 秒\n"), 
+               (unsigned long long)current_digits, elapsed_time);
+        fflush(stdout);  // 立即刷新输出，确保用户能看到
+    }
 }
 
 /*
@@ -171,6 +190,9 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
     mpf_set_ui(sum, 0);     // 初始化求和变量为0
     mpf_set(x1_pow, x1);    // 初始幂次为x1^1
     
+    /* 获取开始时间用于进度显示 */
+    clock_t calc_start = clock();
+    
     /* 级数求和循环 */
     for (unsigned long int i = 0; i < (digits + 1000); i++) {
         /* 计算当前项：x^(2i+1) / (2i+1) */
@@ -186,6 +208,31 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
         /* 为下一次迭代准备：x1_pow *= x1^2 */
         mpf_mul(temp, x1_pow, x1);
         mpf_mul(x1_pow, temp, x1);
+        
+        /* 每1000次迭代检查一次时间，显示2的幂次进度 */
+        if (i % 1000 == 0) {
+            clock_t now = clock();
+            double elapsed = ((double)(now - calc_start)) / CLOCKS_PER_SEC;
+            
+            /* 估算当前精度位数（经验公式） */
+            uint64_t estimated_digits = (uint64_t)(i * 0.3);
+            
+            /* 显示2的幂次进度，避免重复显示 */
+            static uint64_t last_shown = 0;
+            uint64_t power_of_two = 128;
+            while (power_of_two <= digits && power_of_two <= estimated_digits) {
+                if (estimated_digits >= power_of_two && 
+                    estimated_digits < power_of_two * 2 && 
+                    power_of_two != last_shown) {
+                    printf("%6llu位: %8.3f秒\n", 
+                           (unsigned long long)power_of_two, elapsed);
+                    fflush(stdout);
+                    last_shown = power_of_two;
+                    break;
+                }
+                power_of_two *= 2;
+            }
+        }
     }
     
     mpf_mul_ui(term1, sum, 4);  // term1 = 4 * arctan(1/5)
@@ -196,6 +243,10 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
      */
     mpf_set_ui(sum, 0);     // 重置求和变量
     mpf_set(x2_pow, x2);    // 初始幂次为x2^1
+    
+    /* 重置计算开始时间 */
+    calc_start = clock();
+    printf(_("开始计算arctan(1/239)...\n"));
     
     for (unsigned long int i = 0; i < (digits + 1000); i++) {
         /* 计算当前项：x^(2i+1) / (2i+1) */
@@ -211,6 +262,31 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
         /* 为下一次迭代准备：x2_pow *= x2^2 */
         mpf_mul(temp, x2_pow, x2);
         mpf_mul(x2_pow, temp, x2);
+        
+        /* 每1000次迭代检查一次时间，显示2的幂次进度 */
+        if (i % 1000 == 0) {
+            clock_t now = clock();
+            double elapsed = ((double)(now - calc_start)) / CLOCKS_PER_SEC;
+            
+            /* 估算当前精度位数（经验公式，1/239收敛更快） */
+            uint64_t estimated_digits = (uint64_t)(i * 2.0);
+            
+            /* 显示2的幂次进度，避免重复显示 */
+            static uint64_t last_shown = 0;
+            uint64_t power_of_two = 128;
+            while (power_of_two <= digits && power_of_two <= estimated_digits) {
+                if (estimated_digits >= power_of_two && 
+                    estimated_digits < power_of_two * 2 && 
+                    power_of_two != last_shown) {
+                    printf("%6llu位: %8.3f秒 (arctan)\n", 
+                           (unsigned long long)power_of_two, elapsed);
+                    fflush(stdout);
+                    last_shown = power_of_two;
+                    break;
+                }
+                power_of_two *= 2;
+            }
+        }
     }
     
     mpf_set(term2, sum);  // term2 = arctan(1/239)
