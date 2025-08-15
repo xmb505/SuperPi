@@ -311,22 +311,23 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
         mpf_mul_ui(p, p, 2);
         
         /* 每1次迭代检查一次时间，显示2的幂次进度 */
-        if (i % 3 == 0) {  // 每3次迭代显示一次进度
+        if (i % 2 == 0) {  // 每2次迭代显示一次进度
             clock_t now = clock();
             double elapsed = ((double)(now - calc_start)) / CLOCKS_PER_SEC;
             
             /* 显示2的幂次进度，避免重复显示 */
             static uint64_t last_shown = 0;
-            uint64_t power_of_two = 128;
-            while (power_of_two <= digits && i >= (unsigned long)(log2(power_of_two/128)*3)) {
-                if (power_of_two > last_shown) {
+            for (uint64_t power_of_two = 128; power_of_two <= digits && power_of_two <= 1000000; power_of_two *= 2) {
+                // Check if we should display this power of two based on iteration count
+                // The relationship is approximately: iteration = log2(power_of_two/128) * 2
+                unsigned long expected_iter = (unsigned long)(log2(power_of_two/128.0) * 2);
+                if (i >= expected_iter && power_of_two > last_shown) {
                     printf(_("%6llu位: %8.3f秒\n"), 
                            (unsigned long long)power_of_two, elapsed);
                     fflush(stdout);
                     last_shown = power_of_two;
-                    break;
+                    // Don't break here to allow showing multiple updates if they're due
                 }
-                power_of_two *= 2;
             }
         }
         
