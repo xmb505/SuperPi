@@ -7,7 +7,7 @@ This file provides guidance to iFlow Cli when working with code in this reposito
 ```bash
 # Install dependencies (Ubuntu/Debian)
 sudo apt-get update
-sudo apt-get install build-essential gettext libgmp-dev
+sudo apt-get install build-essential gettext libgmp-dev libfftw3-dev
 
 # Build the project
 make clean && make
@@ -15,7 +15,7 @@ make clean && make
 # Run basic tests
 make test
 
-# CPU stress test with 100M digits
+# CPU stress test with 1M digits
 make cpu-test
 
 # Install system-wide
@@ -28,18 +28,19 @@ make ubuntu-deps
 ## Architecture Overview
 
 ### Core Components
-- **superpi.c**: Main application implementing unlimited precision π calculation using the GMP library
-- **Makefile**: Build system with GMP integration and internationalization support
-- **po/**: Internationalization support with Chinese and English translations via gettext
+- **src/superpi.c**: Main application implementing Gauss-Legendre π calculation using GMP and FFTW3 libraries
+- **Makefile**: Build system with GMP and FFTW3 integration and internationalization support
+- **i18n/**: Internationalization support with Chinese translation via gettext
 
 ### Key Features
-- **Unlimited Precision**: Uses GMP library for arbitrary precision arithmetic
-- **Accurate Calculation**: Implements Machin's formula for π computation
+- **High Precision**: Uses GMP library for arbitrary precision arithmetic
+- **Fast Computation**: Implements Gauss-Legendre algorithm for π computation
 - **Internationalization**: GNU gettext support for multiple languages
 - **CPU Stress Testing**: Designed for CPU stability testing with configurable precision
+- **Multiple Modes**: Supports single calculation and continuous calculation modes
 
 ### Performance Characteristics
-- **Precision-based performance**: Computation time scales with requested digit count
+- **Algorithm-based performance**: Gauss-Legendre algorithm has quadratic convergence
 - **Memory-based limits**: Uses system RAM as constraint for digit count
 - **Performance metrics**: Reports digits/second processing rate
 
@@ -52,5 +53,6 @@ make ubuntu-deps
 ### System Requirements
 - Linux system with GCC compiler
 - GMP library for arbitrary precision arithmetic
+- FFTW3 library for optimized computations
 - GNU gettext for internationalization
 - Sufficient RAM for large digit counts (scales with input size)

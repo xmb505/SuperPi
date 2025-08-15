@@ -1,0 +1,274 @@
+# Chinese translations for superpi package
+# superpi 软件包的简体中文翻译.
+# Copyright (C) 2025 THE superpi'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the superpi package.
+# 新毛宝贝 <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: superpi 1.0.0\n"
+"Report-Msgid-Bugs-To: xmb505@blog.xmb505.top\n"
+"POT-Creation-Date: 2025-08-15 17:47+0800\n"
+"PO-Revision-Date: 2025-08-15 17:47+0800\n"
+"Last-Translator: 新毛宝贝 <EMAIL@ADDRESS>\n"
+"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/superpi.c:46
+#, c-format
+msgid ""
+"\n"
+"收到中断信号，正在停止计算...\n"
+msgstr ""
+
+#: src/superpi.c:199
+#, c-format
+msgid ""
+"\n"
+"示例:\n"
+msgstr ""
+
+#: src/superpi.c:203
+#, c-format
+msgid ""
+"\n"
+"系统要求:\n"
+msgstr ""
+
+#: src/superpi.c:195
+#, c-format
+msgid ""
+"\n"
+"选项:\n"
+msgstr ""
+
+#: src/superpi.c:201
+#, c-format
+msgid "  %s --keep      持续计算圆周率\n"
+msgstr ""
+
+#: src/superpi.c:202
+#, c-format
+msgid "  %s --version   显示版本信息\n"
+msgstr ""
+
+#: src/superpi.c:200
+#, c-format
+msgid "  %s 1000        计算1000位\n"
+msgstr ""
+
+#: src/superpi.c:196
+#, c-format
+msgid "  -h, --help     显示此帮助信息\n"
+msgstr ""
+
+#: src/superpi.c:198
+#, c-format
+msgid "  -k, --keep     持续计算圆周率并保存到文件\n"
+msgstr ""
+
+#: src/superpi.c:197
+#, c-format
+msgid "  -v, --version  显示版本信息\n"
+msgstr ""
+
+#: src/superpi.c:204
+#, c-format
+msgid "  Ubuntu/Debian系统，需要编译工具\n"
+msgstr ""
+
+#: src/superpi.c:194
+#, c-format
+msgid "  位数    要计算的圆周率小数位数（无限制）\n"
+msgstr ""
+
+#: src/superpi.c:217
+#, c-format
+msgid " (git: %s)\n"
+msgstr ""
+
+#: src/superpi.c:334
+#, c-format
+msgid "%6llu位: %8.3f秒\n"
+msgstr ""
+
+#: src/superpi.c:119
+#, c-format
+msgid "SuperPi - 持续计算圆周率模式\n"
+msgstr ""
+
+#: src/superpi.c:124 src/superpi.c:162
+#, c-format
+msgid "SuperPi - 正在计算圆周率到 %llu 位...\n"
+msgstr ""
+
+#. 无参数，进入交互模式
+#: src/superpi.c:71
+#, c-format
+msgid "SuperPi - 高精度圆周率计算工具\n"
+msgstr ""
+
+#: src/superpi.c:192
+#, c-format
+msgid ""
+"SuperPi - 高精度圆周率计算工具\n"
+"\n"
+msgstr ""
+
+#: src/superpi.c:441
+#, c-format
+msgid "位数: %llu\n"
+msgstr ""
+
+#: src/superpi.c:72
+#, c-format
+msgid "使用Gauss-Legendre算法计算π值\n"
+msgstr ""
+
+#: src/superpi.c:211
+#, c-format
+msgid "使用Gauss-Legendre算法计算圆周率，支持无限精度\n"
+msgstr ""
+
+#: src/superpi.c:213
+#, c-format
+msgid "博客: blog.xmb505.top\n"
+msgstr ""
+
+#. 记录开始时间
+#. 调用核心计算函数
+#. 用于存储计算结果
+#. 实际计算
+#. 记录结束时间
+#. 计算耗时（秒）
+#. 处理计算结果
+#. 计算成功且未被中断
+#. 记录开始时间
+#. 调用核心计算函数
+#. 用于存储计算结果
+#. 实际计算
+#. 记录结束时间
+#. 计算耗时（秒）
+#. 处理计算结果
+#. 计算成功
+#: src/superpi.c:138 src/superpi.c:176
+#, c-format
+msgid "圆周率计算完成，耗时 %.2f 秒\n"
+msgstr ""
+
+#: src/superpi.c:139 src/superpi.c:177
+#, c-format
+msgid "平均性能: %.2f 位/秒\n"
+msgstr ""
+
+#: src/superpi.c:125 src/superpi.c:163
+#, c-format
+msgid "开始时间: %s\n"
+msgstr ""
+
+#: src/superpi.c:120
+#, c-format
+msgid ""
+"按Ctrl+C停止计算\n"
+"\n"
+msgstr ""
+
+#: src/superpi.c:73
+#, c-format
+msgid ""
+"支持无限精度计算\n"
+"\n"
+msgstr ""
+
+#: src/superpi.c:443
+#, c-format
+msgid "日期: %s\n"
+msgstr ""
+
+#: src/superpi.c:210
+#, c-format
+msgid "版权所有 (c) 2025 新毛宝贝 (xmb505)\n"
+msgstr ""
+
+#. 解析命令行参数
+#. 参数太多，显示用法
+#: src/superpi.c:66 src/superpi.c:193
+#, c-format
+msgid "用法: %s [选项] [位数]\n"
+msgstr ""
+
+#: src/superpi.c:440
+#, c-format
+msgid "由SuperPi计算\n"
+msgstr ""
+
+#: src/superpi.c:442
+#, c-format
+msgid "算法: Gauss-Legendre\n"
+msgstr ""
+
+#. 关闭文件
+#: src/superpi.c:446
+#, c-format
+msgid "结果已保存到: %s\n"
+msgstr ""
+
+#: src/superpi.c:232
+#, c-format
+msgid "计算到 %llu 位用时: %.3f 秒\n"
+msgstr ""
+
+#. 保存结果到文件
+#. 释放内存，防止内存泄漏
+#. 被用户中断
+#: src/superpi.c:143
+#, c-format
+msgid "计算已被用户中断\n"
+msgstr ""
+
+#: src/superpi.c:74
+#, c-format
+msgid "请输入要计算的圆周率位数: "
+msgstr ""
+
+#: src/superpi.c:212
+#, c-format
+msgid "针对64位系统优化\n"
+msgstr ""
+
+#: src/superpi.c:82 src/superpi.c:113
+#, c-format
+msgid "错误: 位数必须在1到%llu之间\n"
+msgstr ""
+
+#. 计算失败
+#. 保存结果到文件
+#. 释放内存，防止内存泄漏
+#. 计算失败
+#: src/superpi.c:147 src/superpi.c:181
+#, c-format
+msgid "错误: 圆周率计算失败\n"
+msgstr ""
+
+#. 解析用户输入的位数
+#. 用于检测转换是否成功
+#. 将字符串转换为无符号长整数
+#. 转换失败或输入为0
+#: src/superpi.c:105
+#, c-format
+msgid "错误: 无效的位数输入。\n"
+msgstr ""
+
+#. 文件打开失败
+#: src/superpi.c:426
+#, c-format
+msgid "错误: 无法创建文件 %s\n"
+msgstr ""
+
+#: src/superpi.c:77
+#, c-format
+msgid "错误: 请输入一个有效的数字\n"
+msgstr ""
