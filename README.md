@@ -29,8 +29,7 @@ sudo aptss install superpi
 ```bash
 git clone https://github.com/xmb505/SuperPi
 cd superpi
-make
-sudo make install
+make all
 ```
 
 ## 使用方法
@@ -67,18 +66,6 @@ superpi --keep
 - FFTW3库（用于计算优化）
 - 最低512MB内存（推荐2GB以上用于大位数计算）
 
-## 国际化
-
-SuperPi支持多语言界面，目前包含：
-- 简体中文（默认）
-
-切换语言：
-```bash
-# 中文界面（默认）
-export LANG=zh_CN.UTF-8
-superpi 1000000
-```
-
 ## 性能测试
 
 SuperPi的计算时间主要取决于：
@@ -111,31 +98,5 @@ sudo apt-get install build-essential libgmp-dev libfftw3-dev
 ### 编译
 
 ```bash
-make
+make all
 ```
-
-### 运行测试
-
-```bash
-make test
-```
-
-## 贡献
-
-欢迎提交Issue和Pull Request！请确保：
-- 代码遵循项目编码规范
-- 添加适当的测试
-- 更新相关文档
-
-## 联系方式
-
-- 项目主页：[GitHub仓库地址]
-- 问题反馈：[GitHub Issues]
-
-## 致谢
-
-感谢所有为这个项目做出贡献的开发者，以及GNU项目提供的gettext国际化支持、GMP库和FFTW3库。
-
----
-
-**记住：SuperPi - 让Linux的CPU测试更简单！**
