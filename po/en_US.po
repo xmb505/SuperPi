@@ -1,0 +1,102 @@
+# English translations for SuperPi
+# Copyright (C) 2025 新毛宝贝 (xmb505)
+# This file is distributed under the same license as the SuperPi package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: superpi 1.0.0\n"
+"Report-Msgid-Bugs-To: xmb505@blog.xmb505.top\n"
+"POT-Creation-Date: 2025-08-15 14:00+0800\n"
+"PO-Revision-Date: 2025-08-15 14:00+0800\n"
+"Last-Translator: 新毛宝贝 <xmb505@blog.xmb505.top>\n"
+"Language-Team: English\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: superpi.c:58
+msgid "Usage: %s [digits]\n"
+msgstr "Usage: %s [digits]\n"
+
+#: superpi.c:65
+msgid "Error: Invalid number of digits. Please specify between 1 and %d.\n"
+msgstr "Error: Invalid number of digits. Please specify between 1 and %d.\n"
+
+#: superpi.c:71
+msgid "SuperPi - Calculating π to %d digits...\n"
+msgstr "SuperPi - Calculating π to %d digits...\n"
+
+#: superpi.c:79
+msgid "Calculation completed in %.2f seconds\n"
+msgstr "Calculation completed in %.2f seconds\n"
+
+#: superpi.c:85
+msgid "Error: Memory allocation failed or calculation error.\n"
+msgstr "Error: Memory allocation failed or calculation error.\n"
+
+#: superpi.c:93
+msgid "Results saved to file.\n"
+msgstr "Results saved to file.\n"
+
+#: superpi.c:101
+msgid "SuperPi - A high-performance pi calculation tool\n\n"
+msgstr "SuperPi - A high-performance pi calculation tool\n\n"
+
+
+
+#: superpi.c:103
+msgid "  digits    Number of digits to calculate (default: %d)\n"
+msgstr "  digits    Number of digits to calculate (default: %d)\n"
+
+#: superpi.c:105
+msgid "\nOptions:\n"
+msgstr "\nOptions:\n"
+
+#: superpi.c:106
+msgid "  -h, --help     Show this help message\n"
+msgstr "  -h, --help     Show this help message\n"
+
+#: superpi.c:107
+msgid "  -v, --version  Show version information\n"
+msgstr "  -v, --version  Show version information\n"
+
+#: superpi.c:109
+msgid "\nExamples:\n"
+msgstr "\nExamples:\n"
+
+#: superpi.c:110
+msgid "  %s 1000000    Calculate 1 million digits\n"
+msgstr "  %s 1000000    Calculate 1 million digits\n"
+
+#: superpi.c:111
+msgid "  %s 10000000   Calculate 10 million digits\n"
+msgstr "  %s 10000000   Calculate 10 million digits\n"
+
+#: superpi.c:116
+msgid "Copyright (c) 2025 新毛宝贝 (xmb505)\n"
+msgstr "Copyright (c) 2025 新毛宝贝 (xmb505)\n"
+
+#: superpi.c:117
+msgid "Blog: blog.xmb505.top\n"
+msgstr "Blog: blog.xmb505.top\n"
+
+#: superpi.c:189
+msgid "Error: Cannot create file %s\n"
+msgstr "Error: Cannot create file %s\n"
+
+#: superpi.c:197
+msgid "Calculated by SuperPi\n"
+msgstr "Calculated by SuperPi\n"
+
+#: superpi.c:198
+msgid "Digits: %d\n"
+msgstr "Digits: %d\n"
+
+#: superpi.c:199
+msgid "Date: %s"
+msgstr "Date: %s"
+
+#: superpi.c:202
+msgid "Results saved to: %s\n"
+msgstr "Results saved to: %s\n"
