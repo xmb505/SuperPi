@@ -7,7 +7,7 @@ This file provides guidance to iFlow Cli when working with code in this reposito
 ```bash
 # Install dependencies (Ubuntu/Debian)
 sudo apt-get update
-sudo apt-get install build-essential gettext libgmp-dev libfftw3-dev
+sudo apt-get install build-essential libgmp-dev libfftw3-dev
 
 # Build the project
 make clean && make
@@ -29,13 +29,11 @@ make ubuntu-deps
 
 ### Core Components
 - **src/superpi.c**: Main application implementing Gauss-Legendre π calculation using GMP and FFTW3 libraries
-- **Makefile**: Build system with GMP and FFTW3 integration and internationalization support
-- **i18n/**: Internationalization support with Chinese translation via gettext
+- **Makefile**: Build system with GMP and FFTW3 integration
 
 ### Key Features
 - **High Precision**: Uses GMP library for arbitrary precision arithmetic
 - **Fast Computation**: Implements Gauss-Legendre algorithm for π computation
-- **Internationalization**: GNU gettext support for multiple languages
 - **CPU Stress Testing**: Designed for CPU stability testing with configurable precision
 - **Multiple Modes**: Supports single calculation and continuous calculation modes
 
@@ -54,5 +52,4 @@ make ubuntu-deps
 - Linux system with GCC compiler
 - GMP library for arbitrary precision arithmetic
 - FFTW3 library for optimized computations
-- GNU gettext for internationalization
 - Sufficient RAM for large digit counts (scales with input size)

@@ -10,17 +10,12 @@
 #include <stdlib.h>     // 标准库函数（内存分配、进程控制等）
 #include <string.h>     // 字符串处理函数
 #include <time.h>       // 时间相关函数
-#include <locale.h>     // 本地化支持（多语言）
-#include <libintl.h>    // GNU国际化库
 #include <stdint.h>     // 精确宽度整数类型
 #include <unistd.h>     // Unix标准函数
 #include <signal.h>     // 信号处理
 #include <math.h>       // 数学函数
 #include <gmp.h>        // GNU高精度数学库，用于大数计算
 #include <fftw3.h>      // FFTW库，用于优化计算
-
-// 国际化宏定义：将字符串标记为可翻译
-#define _(STRING) gettext(STRING)
 
 // 默认计算100万位圆周率
 #define DEFAULT_DIGITS 1000000
@@ -44,18 +39,13 @@ void print_progress_time(uint64_t current_digits, double elapsed_time);  // 显�
 void signal_handler(int sig) {
     if (sig == SIGINT) {
         keep_running = 0;
-        printf(_("\n收到中断信号，正在停止计算...\n"));
+        printf("\n收到中断信号，正在停止计算...\n");
     }
 }
 
 int main(int argc, char *argv[]) {
     uint64_t digits = DEFAULT_DIGITS;  // 默认计算位数
     int keep_mode = 0;  // 持续计算模式标志
-    
-    /* 国际化设置：让程序支持多语言显示 */
-    setlocale(LC_ALL, "");  // 根据系统环境设置本地化
-    bindtextdomain("superpi", "/usr/share/locale");  // 设置翻译文件路径
-    textdomain("superpi");  // 设置当前使用的翻译域
     
     program_name = argv[0];  // 保存程序名称，用于错误提示
     
@@ -64,23 +54,23 @@ int main(int argc, char *argv[]) {
     
     /* 解析命令行参数 */
     if (argc > 2) {  // 参数太多，显示用法
-        fprintf(stderr, _("用法: %s [选项] [位数]\n"), program_name);
+        fprintf(stderr, "用法: %s [选项] [位数]\n", program_name);
         return 1;  // 返回错误码1
     }
     
     if (argc == 1) {  // 无参数，进入交互模式
-        printf(_("SuperPi - 高精度圆周率计算工具\n"));
-        printf(_("使用Gauss-Legendre算法计算π值\n"));
-        printf(_("支持无限精度计算\n\n"));
-        printf(_("请输入要计算的圆周率位数: "));
+        printf("SuperPi - 高精度圆周率计算工具\n");
+        printf("使用Gauss-Legendre算法计算π值\n");
+        printf("支持无限精度计算\n\n");
+        printf("请输入要计算的圆周率位数: ");
         
         if (scanf("%lu", &digits) != 1) {
-            fprintf(stderr, _("错误: 请输入一个有效的数字\n"));
+            fprintf(stderr, "错误: 请输入一个有效的数字\n");
             return 1;
         }
         
         if (digits <= 0 || digits > MAX_DIGITS) {
-            fprintf(stderr, _("错误: 位数必须在1到%llu之间\n"), (unsigned long long)MAX_DIGITS);
+            fprintf(stderr, "错误: 位数必须在1到%llu之间\n", (unsigned long long)MAX_DIGITS);
             return 1;
         }
     } else if (argc == 2) {  // 用户提供了一个参数
@@ -103,7 +93,7 @@ int main(int argc, char *argv[]) {
             char *endptr;  // 用于检测转换是否成功
             digits = strtoull(argv[1], &endptr, 10);  // 将字符串转换为无符号长整数
             if (*endptr != '\0' || digits == 0) {  // 转换失败或输入为0
-                fprintf(stderr, _("错误: 无效的位数输入。\n"));
+                fprintf(stderr, "错误: 无效的位数输入。\n");
                 return 1;  // 返回错误码1
             }
         }
@@ -111,19 +101,19 @@ int main(int argc, char *argv[]) {
     
     /* 参数检查 */
     if (!keep_mode && (digits <= 0 || digits > MAX_DIGITS)) {
-        fprintf(stderr, _("错误: 位数必须在1到%llu之间\n"), (unsigned long long)MAX_DIGITS);
+        fprintf(stderr, "错误: 位数必须在1到%llu之间\n", (unsigned long long)MAX_DIGITS);
         return 1;
     }
     
     /* 开始计算 */
     if (keep_mode) {
-        printf(_("SuperPi - 持续计算圆周率模式\n"));
-        printf(_("按Ctrl+C停止计算\n\n"));
+        printf("SuperPi - 持续计算圆周率模式\n");
+        printf("按Ctrl+C停止计算\n\n");
         
         uint64_t current_digits = 1000;
         while (keep_running) {
-            printf(_("SuperPi - 正在计算圆周率到 %llu 位...\n"), (unsigned long long)current_digits);
-            printf(_("开始时间: %s\n"), __TIME__);
+            printf("SuperPi - 正在计算圆周率到 %llu 位...\n", (unsigned long long)current_digits);
+            printf("开始时间: %s\n", __TIME__);
             
             clock_t start = clock();  // 记录开始时间
             
@@ -136,16 +126,16 @@ int main(int argc, char *argv[]) {
             
             /* 处理计算结果 */
             if (calculated > 0 && pi_result && keep_running) {  // 计算成功且未被中断
-                printf(_("圆周率计算完成，耗时 %.2f 秒\n"), elapsed);
-                printf(_("平均性能: %.2f 位/秒\n"), (double)calculated / elapsed);
+                printf("圆周率计算完成，耗时 %.2f 秒\n", elapsed);
+                printf("平均性能: %.2f 位/秒\n", (double)calculated / elapsed);
                 save_pi_to_file(pi_result, calculated);  // 保存结果到文件
                 free(pi_result);  // 释放内存，防止内存泄漏
             } else if (!keep_running) {  // 被用户中断
-                printf(_("计算已被用户中断\n"));
+                printf("计算已被用户中断\n");
                 if (pi_result) free(pi_result);
                 break;
             } else {  // 计算失败
-                fprintf(stderr, _("错误: 圆周率计算失败\n"));
+                fprintf(stderr, "错误: 圆周率计算失败\n");
                 if (pi_result) free(pi_result);
                 break;
             }
@@ -160,8 +150,8 @@ int main(int argc, char *argv[]) {
             sleep(1);
         }
     } else {
-        printf(_("SuperPi - 正在计算圆周率到 %llu 位...\n"), (unsigned long long)digits);
-        printf(_("开始时间: %s\n"), __TIME__);
+        printf("SuperPi - 正在计算圆周率到 %llu 位...\n", (unsigned long long)digits);
+        printf("开始时间: %s\n", __TIME__);
         
         clock_t start = clock();  // 记录开始时间
         
@@ -174,12 +164,12 @@ int main(int argc, char *argv[]) {
         
         /* 处理计算结果 */
         if (calculated > 0 && pi_result) {  // 计算成功
-            printf(_("圆周率计算完成，耗时 %.2f 秒\n"), elapsed);
-            printf(_("平均性能: %.2f 位/秒\n"), (double)calculated / elapsed);
+            printf("圆周率计算完成，耗时 %.2f 秒\n", elapsed);
+            printf("平均性能: %.2f 位/秒\n", (double)calculated / elapsed);
             save_pi_to_file(pi_result, calculated);  // 保存结果到文件
             free(pi_result);  // 释放内存，防止内存泄漏
         } else {  // 计算失败
-            fprintf(stderr, _("错误: 圆周率计算失败\n"));
+            fprintf(stderr, "错误: 圆周率计算失败\n");
             if (pi_result) free(pi_result);
             return 1;
         }
@@ -190,32 +180,32 @@ int main(int argc, char *argv[]) {
 
 /* 打印使用帮助信息 */
 void print_usage(void) {
-    printf(_("SuperPi - 高精度圆周率计算工具\n\n"));
-    printf(_("用法: %s [选项] [位数]\n"), program_name);
-    printf(_("  位数    要计算的圆周率小数位数（无限制）\n"));
-    printf(_("\n选项:\n"));
-    printf(_("  -h, --help     显示此帮助信息\n"));
-    printf(_("  -v, --version  显示版本信息\n"));
-    printf(_("  -k, --keep     持续计算圆周率并保存到文件\n"));
-    printf(_("\n示例:\n"));
-    printf(_("  %s 1000        计算1000位\n"), program_name);
-    printf(_("  %s --keep      持续计算圆周率\n"), program_name);
-    printf(_("  %s --version   显示版本信息\n"), program_name);
-    printf(_("\n系统要求:\n"));
-    printf(_("  Ubuntu/Debian系统，需要编译工具\n"));
+    printf("SuperPi - 高精度圆周率计算工具\n\n");
+    printf("用法: %s [选项] [位数]\n", program_name);
+    printf("  位数    要计算的圆周率小数位数（无限制）\n");
+    printf("\n选项:\n");
+    printf("  -h, --help     显示此帮助信息\n");
+    printf("  -v, --version  显示版本信息\n");
+    printf("  -k, --keep     持续计算圆周率并保存到文件\n");
+    printf("\n示例:\n");
+    printf("  %s 1000        计算1000位\n", program_name);
+    printf("  %s --keep      持续计算圆周率\n", program_name);
+    printf("  %s --version   显示版本信息\n", program_name);
+    printf("\n系统要求:\n");
+    printf("  Ubuntu/Debian系统，需要编译工具\n");
 }
 
 /* 打印版本信息 */
 void print_version(void) {
     printf("SuperPi 5.0.0\n");
-    printf(_("版权所有 (c) 2025 新毛宝贝 (xmb505)\n"));
-    printf(_("使用Gauss-Legendre算法计算圆周率，支持无限精度\n"));
-    printf(_("针对64位系统优化\n"));
-    printf(_("博客: blog.xmb505.top\n"));
+    printf("版权所有 (c) 2025 新毛宝贝 (xmb505)\n");
+    printf("使用Gauss-Legendre算法计算圆周率，支持无限精度\n");
+    printf("针对64位系统优化\n");
+    printf("博客: blog.xmb505.top\n");
     
     // 获取Git哈希值（如果可用）
     #ifdef GIT_VERSION
-    printf(_(" (git: %s)\n"), GIT_VERSION);
+    printf(" (git: %s)\n", GIT_VERSION);
     #endif
 }
 
@@ -230,7 +220,7 @@ void print_version(void) {
 void print_progress_time(uint64_t current_digits, double elapsed_time) {
     /* 检查是否是2的幂次（128, 256, 512, 1024...） */
     if (current_digits >= 128 && (current_digits & (current_digits - 1)) == 0) {
-        printf(_("计算到 %llu 位用时: %.3f 秒\n"), 
+        printf("计算到 %llu 位用时: %.3f 秒\n", 
                (unsigned long long)current_digits, elapsed_time);
         fflush(stdout);  // 立即刷新输出，确保用户能看到
     }
@@ -322,7 +312,7 @@ uint64_t calculate_pi_digits(uint64_t digits, char **result) {
                 // The relationship is approximately: iteration = log2(power_of_two/128) * 2
                 unsigned long expected_iter = (unsigned long)(log2(power_of_two/128.0) * 2);
                 if (i >= expected_iter && power_of_two > last_shown) {
-                    printf(_("%6llu位: %8.3f秒\n"), 
+                    printf("%6llu位: %8.3f秒\n", 
                            (unsigned long long)power_of_two, elapsed);
                     fflush(stdout);
                     last_shown = power_of_two;
@@ -414,7 +404,7 @@ void save_pi_to_file(const char *pi_str, uint64_t digits) {
     /* 打开文件用于写入 */
     FILE *fp = fopen(filename, "w");
     if (!fp) {  // 文件打开失败
-        fprintf(stderr, _("错误: 无法创建文件 %s\n"), filename);
+        fprintf(stderr, "错误: 无法创建文件 %s\n", filename);
         return;
     }
     
@@ -428,11 +418,11 @@ void save_pi_to_file(const char *pi_str, uint64_t digits) {
     
     /* 写入文件尾部信息 */
     fprintf(fp, "\n\n");
-    fprintf(fp, _("由SuperPi计算\n"));
-    fprintf(fp, _("位数: %llu\n"), (unsigned long long)digits);
-    fprintf(fp, _("算法: Gauss-Legendre\n"));
-    fprintf(fp, _("日期: %s\n"), __DATE__);
+    fprintf(fp, "由SuperPi计算\n");
+    fprintf(fp, "位数: %llu\n", (unsigned long long)digits);
+    fprintf(fp, "算法: Gauss-Legendre\n");
+    fprintf(fp, "日期: %s\n", __DATE__);
     
     fclose(fp);  // 关闭文件
-    printf(_("结果已保存到: %s\n"), filename);
+    printf("结果已保存到: %s\n", filename);
 }
